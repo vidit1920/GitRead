@@ -10,7 +10,7 @@ from pathlib import Path
 from langchain_core.documents import Document
 from agent.tools import get_code_search_tools
 
-from config import (
+from back_end.config import (
     SUPERVISOR_SYSTEM_PROMPT,
     AGENT_SYSTEM_PROMPT_HEADER,
     AGENT_SYSTEM_PROMPT_TOOLS,

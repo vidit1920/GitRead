@@ -10,7 +10,7 @@ from langchain_text_splitters import (
 )
 from chonkie import CodeChunker
 
-from config import CHUNK_OVERLAP,CHUNK_SIZE,AST_BASED_SPLITTING
+from back_end.config import CHUNK_OVERLAP,CHUNK_SIZE,AST_BASED_SPLITTING
 
 def custom_splitter(docs: List[Document],current_dir: Path) -> List[Document]:
     all_chunks: List[Document] = []

@@ -5,7 +5,7 @@ from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from sentence_transformers import SentenceTransformer
 import uuid  # to generate ids 
-from config import CHROMA_PERSIST_DIR,CHROMA_COLLECTION_NAME
+from back_end.config import CHROMA_PERSIST_DIR,CHROMA_COLLECTION_NAME
 import os
 import shutil
 from core.downloader import delete_dir

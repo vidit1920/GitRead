@@ -6,7 +6,7 @@ from langchain.tools import tool
 from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document
 from langchain_core.tools import BaseTool
-from config import EXCLUDE_PATTERNS
+from back_end.config import EXCLUDE_PATTERNS
 
 
 
