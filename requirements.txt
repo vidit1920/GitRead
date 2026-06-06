@@ -1,0 +1,33 @@
+--extra-index-url https://download.pytorch.org/whl/cu130
+
+# --- Core Frameworks & GenAI ---
+langchain==1.2.15
+langchain-core==1.2.28
+langchain-community==0.4.1
+langchain-google-genai==4.2.1
+langgraph==1.1.6
+google-genai==1.70.0
+
+# --- Vector Database & Embeddings ---
+langchain-chroma==1.1.0
+chromadb==1.5.5
+sentence-transformers==5.3.0
+torch>=2.2.0
+
+# --- Document Processing & Chunking ---
+langchain-text-splitters==1.1.1
+tree-sitter==0.25.2
+tree-sitter-language-pack==1.4.2
+chonkie==1.6.2
+pypdf==6.9.2
+tiktoken==0.12.0
+pillow==12.2.0
+
+# --- Utilities & Infrastructure ---
+python-dotenv==1.2.2
+pydantic==2.13.0
+requests==2.33.1
+tqdm==4.67.3
+pathspec==1.0.4
+pyyaml==6.0.3
+websockets==16.0

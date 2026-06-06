@@ -1,0 +1,11 @@
+# Python cache
+**/__pycache__/
+*.pyc
+
+# Secrets and API Keys
+.env
+**/generated_chroma_database/
+**/temp_git_repo_storage/
+
+# Virtual Environment
+/venv/
