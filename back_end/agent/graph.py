@@ -8,7 +8,7 @@ from typing import Literal
 import json
 from pathlib import Path
 from langchain_core.documents import Document
-from agent.tools import get_code_search_tools
+from back_end.agent.tools import get_code_search_tools
 
 from back_end.config import (
     SUPERVISOR_SYSTEM_PROMPT,
