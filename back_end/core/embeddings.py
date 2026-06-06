@@ -1,5 +1,5 @@
 import torch
-from langchain_core.embeddings import Embeddings
+from langchain_back_end.core.embeddings import Embeddings
 from typing import List
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
@@ -8,7 +8,7 @@ import uuid  # to generate ids
 from back_end.config import CHROMA_PERSIST_DIR,CHROMA_COLLECTION_NAME
 import os
 import shutil
-from core.downloader import delete_dir
+from back_end.core.downloader import delete_dir
 
 #This is fix for issue with model SFR-Embedding-Code-400M_R while working with latest RTX5050 
 def _inject_position_ids_hook(module, args, kwargs):
