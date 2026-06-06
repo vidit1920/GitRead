@@ -182,6 +182,6 @@ async def chat_stream(request: ChatRequest):
 
 # ── Serve frontend — must be LAST ──────────────────────────────────────────────
 app.mount("/", StaticFiles(
-    directory=r"C:\Users\gvidi\OneDrive\Desktop\What-Repo-main\What-Repo-main\front_end",
+    directory=r"front_end",
     html=True
 ), name="frontend")
