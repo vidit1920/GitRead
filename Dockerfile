@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 ENV GOOGLE_API_KEY=""
+ENV PYTHONPATH=/app
 
 EXPOSE 7860
 
