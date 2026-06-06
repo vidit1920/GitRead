@@ -11,12 +11,12 @@ from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, AIMessage
 
 # Import your existing backend logic
-from core.downloader import download_github_repo, delete_dir
-from core.loader import count_valid_supported_files, load_repository_as_documents
-from core.splitter import custom_splitter
-from core.embeddings import build_vector_db
-from agent.graph import build_workflow
-from config import MAX_FILES_TO_CREATE_VECTOR_DB
+from back_end.core.downloader import download_github_repo, delete_dir
+from back_end.core.loader import count_valid_supported_files, load_repository_as_documents
+from back_end.core.splitter import custom_splitter
+from back_end.core.embeddings import build_vector_db
+from back_end.agent.graph import build_workflow
+from back_end.config import MAX_FILES_TO_CREATE_VECTOR_DB
 import json
 
 load_dotenv()
