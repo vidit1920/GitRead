@@ -53,7 +53,10 @@ def _tiktoken_counter(messages):
 # ---------------------------------------------------------
 def initialize_agent(is_vector_db_created: bool, tools: list):
     # llm = ChatGoogleGenerativeAI( model="gemini-3.1-flash-lite-preview",temperature=0 )
-    llm = ChatGoogleGenerativeAI( model="gemma-4-31b-it",temperature=0 )
+    llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    temperature=0
+)
     llm_with_tools = llm.bind_tools(tools)
 
     message_trimmer = trim_messages(
