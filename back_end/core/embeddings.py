@@ -52,29 +52,30 @@ from back_end.core.downloader import delete_dir
 
 
 # ── NEW: Google Generative AI Embeddings (no GPU needed) ─────────────────────
-import google.generativeai as genai
+import google.genai as genai
 
 def _get_embedding_function():
     class GoogleEmbeddings(Embeddings):
+        def __init__(self):
+            self.client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+
         def embed_documents(self, texts):
-            genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
             result = []
             for text in texts:
-                response = genai.embed_content(
-                    model="models/embedding-001",
-                    content=text
+                response = self.client.models.embed_content(
+                    model="text-embedding-004",
+                    contents=text
                 )
-                result.append(response['embedding'])
+                result.append(response.embeddings[0].values)
             return result
 
         def embed_query(self, text):
-            genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-            response = genai.embed_content(
-                model="models/embedding-001",
-                content=text
+            response = self.client.models.embed_content(
+                model="text-embedding-004",
+                contents=text
             )
-            return response['embedding']
-    
+            return response.embeddings[0].values
+
     return GoogleEmbeddings()
 # ─────────────────────────────────────────────────────────────────────────────
 
