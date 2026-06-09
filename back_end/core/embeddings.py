@@ -55,7 +55,7 @@ from back_end.core.downloader import delete_dir
 # ── NEW: Google Generative AI Embeddings (no GPU needed) ─────────────────────
 def _get_embedding_function():
     return GoogleGenerativeAIEmbeddings(
-        model="models/text-embedding-004",
+        model="models/embedding-001",
         google_api_key=os.getenv("GOOGLE_API_KEY")
     )
 # ─────────────────────────────────────────────────────────────────────────────
