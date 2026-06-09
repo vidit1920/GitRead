@@ -61,7 +61,7 @@ def _get_embedding_function():
             result = []
             for text in texts:
                 response = genai.embed_content(
-                    model="models/text-embedding-004",
+                    model="models/embedding-001",
                     content=text
                 )
                 result.append(response['embedding'])
@@ -70,7 +70,7 @@ def _get_embedding_function():
         def embed_query(self, text):
             genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
             response = genai.embed_content(
-                model="models/text-embedding-004",
+                model="models/embedding-001",
                 content=text
             )
             return response['embedding']
