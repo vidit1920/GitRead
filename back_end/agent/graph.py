@@ -54,9 +54,9 @@ def _tiktoken_counter(messages):
 def initialize_agent(is_vector_db_created: bool, tools: list):
     # llm = ChatGoogleGenerativeAI( model="gemini-3.1-flash-lite-preview",temperature=0 )
     llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    temperature=0
-)
+        model="gemini-1.5-flash",
+        temperature=0
+    )
     llm_with_tools = llm.bind_tools(tools)
 
     message_trimmer = trim_messages(
@@ -107,8 +107,14 @@ class SupervisorDecision(BaseModel):
 
 def initialize_supervisor():
 
-    powerful_llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.2,max_output_tokens=65536)
-    powerful_agent = powerful_llm.with_structured_output(SupervisorDecision)
+    powerful_llm = ChatGoogleGenerativeAI(
+        model="gemini-1.5-flash",
+        temperature=0.2
+    )
+
+    powerful_agent = powerful_llm.with_structured_output(
+        SupervisorDecision
+    )
 
     def supervisor_node(state: MessagesState):
         # Calculate iteration count based on previous feedback messages
