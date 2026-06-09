@@ -54,9 +54,9 @@ def _tiktoken_counter(messages):
 def initialize_agent(is_vector_db_created: bool, tools: list):
     # llm = ChatGoogleGenerativeAI( model="gemini-3.1-flash-lite-preview",temperature=0 )
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        temperature=0
-    )
+    model="gemini-2.5-flash",
+    temperature=0
+)
     llm_with_tools = llm.bind_tools(tools)
 
     message_trimmer = trim_messages(
@@ -108,8 +108,9 @@ class SupervisorDecision(BaseModel):
 def initialize_supervisor():
 
     powerful_llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        temperature=0.2
+        model="gemini-2.5-flash",
+        temperature=0.2,
+        max_output_tokens=65536
     )
 
     powerful_agent = powerful_llm.with_structured_output(
@@ -117,28 +118,60 @@ def initialize_supervisor():
     )
 
     def supervisor_node(state: MessagesState):
+
         # Calculate iteration count based on previous feedback messages
         iteration_count = sum(
-            1 for m in state["messages"] 
-            if isinstance(m, HumanMessage) and "SUPERVISOR FEEDBACK:" in m.content
+            1 for m in state["messages"]
+            if isinstance(m, HumanMessage)
+            and "SUPERVISOR FEEDBACK:" in m.content
         )
 
-        system_prompt =  SUPERVISOR_SYSTEM_PROMPT
+        system_prompt = SUPERVISOR_SYSTEM_PROMPT
 
         # STRUCTURAL SAFEGUARD: Force accept after 2 rejections
         if iteration_count >= 2:
             system_prompt += """
             \n\n*** CRITICAL OVERRIDE ***
-            You have rejected the researcher 2 times. You MUST now output status="ACCEPT" and synthesize the best possible final answer from ALL available evidence, explicitly noting what is implicit vs explicit. DO NOT REJECT.
+            You have rejected the researcher 2 times.
+            You MUST now output status="ACCEPT" and synthesize
+            the best possible final answer from ALL available
+            evidence, explicitly noting what is implicit vs explicit.
+            DO NOT REJECT.
             """
 
-        messages_to_evaluate = [{"role": "system", "content": system_prompt}] + state["messages"]
-        decision = powerful_agent.invoke(messages_to_evaluate)
-        
+        messages_to_evaluate = [
+            {"role": "system", "content": system_prompt}
+        ] + state["messages"]
+
+        try:
+            decision = powerful_agent.invoke(messages_to_evaluate)
+
+        except Exception as e:
+            print(f"Supervisor Error: {e}")
+
+            return {
+                "messages": [
+                    AIMessage(
+                        content=f"Supervisor temporarily unavailable: {str(e)}"
+                    )
+                ]
+            }
+
         if decision.status == "ACCEPT":
-            return {"messages": [AIMessage(content=decision.content)]}
-        else:
-            return {"messages": [HumanMessage(content=f"SUPERVISOR FEEDBACK: {decision.content}")]}
+            return {
+                "messages": [
+                    AIMessage(content=decision.content)
+                ]
+            }
+
+        return {
+            "messages": [
+                HumanMessage(
+                    content=f"SUPERVISOR FEEDBACK: {decision.content}"
+                )
+            ]
+        }
+
     return supervisor_node
         
 # --- Custom Router for the Supervisor ---
