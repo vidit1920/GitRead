@@ -1,5 +1,6 @@
 import os
 import uuid
+import time
 from typing import List
 
 from langchain_core.embeddings import Embeddings
@@ -62,12 +63,15 @@ def _get_embedding_function():
 
         def embed_documents(self, texts: List[str]) -> List[List[float]]:
             result = []
-            for text in texts:
+            for i, text in enumerate(texts):
                 response = self.client.models.embed_content(
                     model="gemini-embedding-001",
                     contents=text
                 )
                 result.append(response.embeddings[0].values)
+                # pause every 50 requests to avoid rate limit
+                if (i + 1) % 50 == 0:
+                    time.sleep(1)
             return result
 
         def embed_query(self, text: str) -> List[float]:
