@@ -1,6 +1,5 @@
 import os
 import uuid
-import shutil
 from typing import List
 
 from langchain_core.embeddings import Embeddings
@@ -8,6 +7,7 @@ from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from back_end.config import CHROMA_PERSIST_DIR, CHROMA_COLLECTION_NAME
 from back_end.core.downloader import delete_dir
+import google.genai as genai
 
 # ── OLD LOCAL GPU EMBEDDINGS (commented out) ────────────────────────────────
 # from sentence_transformers import SentenceTransformer
@@ -52,29 +52,27 @@ from back_end.core.downloader import delete_dir
 
 
 # ── NEW: Google Generative AI Embeddings (no GPU needed) ─────────────────────
-import google.genai as genai
-
 def _get_embedding_function():
     class GoogleEmbeddings(Embeddings):
         def __init__(self):
             self.client = genai.Client(
-    api_key=os.getenv("GOOGLE_API_KEY"),
-    http_options={"api_version": "v1"}
-)
+                api_key=os.getenv("GOOGLE_API_KEY"),
+                http_options={"api_version": "v1"}
+            )
 
-        def embed_documents(self, texts):
+        def embed_documents(self, texts: List[str]) -> List[List[float]]:
             result = []
             for text in texts:
                 response = self.client.models.embed_content(
-                    model="text-embedding-004",
+                    model="gemini-embedding-001",
                     contents=text
                 )
                 result.append(response.embeddings[0].values)
             return result
 
-        def embed_query(self, text):
+        def embed_query(self, text: str) -> List[float]:
             response = self.client.models.embed_content(
-                model="text-embedding-004",
+                model="gemini-embedding-001",
                 contents=text
             )
             return response.embeddings[0].values
