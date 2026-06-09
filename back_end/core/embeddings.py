@@ -57,7 +57,10 @@ import google.genai as genai
 def _get_embedding_function():
     class GoogleEmbeddings(Embeddings):
         def __init__(self):
-            self.client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+            self.client = genai.Client(
+    api_key=os.getenv("GOOGLE_API_KEY"),
+    http_options={"api_version": "v1"}
+)
 
         def embed_documents(self, texts):
             result = []
